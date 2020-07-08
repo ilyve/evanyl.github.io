@@ -29,7 +29,17 @@ export default class InputHandler {
 		});
 
 		htmlObject.addEventListener('touchstart', (e) => {
-			alert(e.touches[0].clientX);
+			if(e.touches[0].clientX < 400) {
+				paddle.moveLeft();
+			} else if (e.touches[0].clientX > 600) {
+				paddle.moveRight();
+			}
 		});
+
+		htmlObject.addEventListener('touchend', (e) => {
+			paddle.speed = 0;
+		});
+
+
 	}
 }
