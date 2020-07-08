@@ -29,7 +29,7 @@ export default class InputHandler {
 		});
 
 		htmlObject.addEventListener('touchstart', (e) => {
-			alert("touch");
+			alert(e.touches[0].clientX);
 		});
 	}
 }
