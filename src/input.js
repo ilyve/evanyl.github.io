@@ -47,7 +47,7 @@ export default class InputHandler {
 					paddle.speed = 0;
 				}
 			}*/
-			alert(f.touches[f.touches.length - 1].clintX);
+			alert(f.touches[f.touches.length - 1].clientX);
 		});
 
 
