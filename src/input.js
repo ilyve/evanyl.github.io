@@ -29,9 +29,9 @@ export default class InputHandler {
 		});
 
 		htmlObject.addEventListener('touchstart', (e) => {
-			if(e.touches[0].clientX < 400) {
+			if(e.touches[e.touches.length -1].clientX < 400) {
 				paddle.moveLeft();
-			} else if (e.touches[0].clientX > 600) {
+			} else if (e.touches[e.touches.length -1].clientX > 600) {
 				paddle.moveRight();
 			}
 		});
