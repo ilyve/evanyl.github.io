@@ -15,7 +15,6 @@ export default class InputHandler {
 		});
 
 		document.addEventListener("keyup", event => {
-			// alert(event.keyCode);
 			switch(event.keyCode) {
 				case 37:
 					if (paddle.speed < 0) paddle.speed = 0;
@@ -29,7 +28,6 @@ export default class InputHandler {
 		});
 
 		htmlObject.addEventListener('touchstart', (e) => {
-
 			if(e.touches[e.touches.length -1].clientX < 400) {
 				paddle.moveLeft();
 			} else if (e.touches[e.touches.length -1].clientX > 600) {
@@ -38,7 +36,7 @@ export default class InputHandler {
 		});
 
 		htmlObject.addEventListener('touchend', (e) => {
-			if (e.touches === 0) paddle.speed = 0;
+			if (e.touches.length === 0) paddle.speed = 0;
 		});
 
 
