@@ -1,6 +1,7 @@
 import Paddle from "./paddle.js";
 import InputHandler from "./input.js";
 import Ball from "./ball.js";
+import Brick from "./brick.js";
 
 // Grabbing and initializing drawable canvas from index.html
 let ctx = document.getElementById("gameScreen").getContext("2d");
@@ -13,6 +14,15 @@ const GAME_HEIGHT = 600;
 // Init objects
 let paddle = new Paddle(GAME_WIDTH, GAME_HEIGHT);
 let ball = new Ball(GAME_WIDTH, GAME_HEIGHT);
+
+let bricks = [];
+let brick;
+
+for (let i = 0; i <= 10; i++) {
+	for (let j = 0; j <= 19; j++) {
+		bricks.push(new Brick(ball, {x: j * 40, y: i * 20 + 100}));
+	}
+};
 new InputHandler(paddle, htmlObject);
 
 // Game Loop Begins
@@ -31,6 +41,13 @@ const gameLoop = timestamp => {
 
 	ball.update(deltaTime);
 	ball.draw(ctx);
+
+	for (brick of bricks) {
+		brick.update();
+		brick.draw(ctx);
+	}
+
+	bricks = bricks.filter(object => !object.delete);
 
 	if (
 		ball.position.x >= paddle.position.x && 
