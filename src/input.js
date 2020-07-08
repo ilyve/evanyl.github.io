@@ -29,6 +29,7 @@ export default class InputHandler {
 		});
 
 		htmlObject.addEventListener('touchstart', (e) => {
+
 			if(e.touches[e.touches.length -1].clientX < 400) {
 				paddle.moveLeft();
 			} else if (e.touches[e.touches.length -1].clientX > 600) {
@@ -37,17 +38,7 @@ export default class InputHandler {
 		});
 
 		htmlObject.addEventListener('touchend', (f) => {
-			/*alert(e.touches[e.touches.length - 1].clientX);
-			if(e.touches[e.touches.length - 1].clientX < 400) {
-				if (paddle.speed < 0) {
-					paddle.speed = 0;
-				}
-			} else if (e.touches[e.touches.length -1].clientX > 600) {
-				if (paddle.speed > 0) {
-					paddle.speed = 0;
-				}
-			}*/
-			alert(f.touches[f.touches.length - 1].clientX);
+			if (f.touches === 0) paddle.speed = 0;
 		});
 
 
