@@ -1,3 +1,5 @@
+import {checkCollision} from "./collisions.js";
+
 export default class Ball {
 	constructor(gameWidth, gameHeight) {
 		this.image = new Image();
@@ -16,7 +18,7 @@ export default class Ball {
 		ctx.drawImage(this.image, this.position.x,this.position.y, this.size, this.size);
 	}
 
-	update(deltaTime) {
+	update(deltaTime, bricks) {
 		this.position.x += this.speed.x * (deltaTime / 1000);
 		this.position.y += this.speed.y * (deltaTime / 1000);
 
@@ -35,6 +37,14 @@ export default class Ball {
 		} else if (this.position.y > this.gameHeight - this.size) {
 			this.position.y = this.gameHeight - this.size;
 			this.speed.y = -this.speed.y;
+		}
+
+		let brick;
+		for (brick of bricks) {
+			if (checkCollision(this, brick)) {
+				brick.delete = true;
+				this.speed.y = -this.speed.y;
+			}
 		}
 	}
 }

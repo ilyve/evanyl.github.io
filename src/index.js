@@ -13,7 +13,9 @@ const GAME_HEIGHT = 600;
 
 // Init objects
 let paddle = new Paddle(GAME_WIDTH, GAME_HEIGHT);
-let ball = new Ball(GAME_WIDTH, GAME_HEIGHT);
+
+let balls = [new Ball(GAME_WIDTH, GAME_HEIGHT)];
+let ball;
 
 let bricks = [];
 let brick;
@@ -39,19 +41,28 @@ const gameLoop = timestamp => {
 	paddle.update(deltaTime);
 	paddle.draw(ctx);
 
-	ball.update(deltaTime);
-	ball.draw(ctx);
+	for (ball of balls) {
+		ball.update(deltaTime, bricks);
+		ball.draw(ctx);
+	}
 
 	for (brick of bricks) {
-		brick.update();
 		brick.draw(ctx);
 	}
 
 	bricks = bricks.filter(object => !object.delete);
 
-	if (
-		ball.position.x >= paddle.position.x && 
-		ball.position.x + ball.size <= paddle.position.x + paddle.width
+	if (bricks.length <= 210 && balls.length <= 3) {
+		balls.push(new Ball(GAME_WIDTH, GAME_HEIGHT));
+		balls[1].speed.x = -balls[1].speed.x;
+		balls.push(new Ball(GAME_WIDTH, GAME_HEIGHT));
+		balls[2].speed.y = -balls[2].speed.x;
+	}
+	
+	for (ball of balls) {
+		if (
+			ball.position.x >= paddle.position.x && 
+			ball.position.x + ball.size <= paddle.position.x + paddle.width
 		) {
 		if (
 			ball.position.y + ball.size >= paddle.position.y && 
@@ -60,6 +71,7 @@ const gameLoop = timestamp => {
 				ball.position.y = paddle.position.y - ball.size;
 				ball.speed.y = -ball.speed.y;		
 			}
+		}
 	}
 
 	requestAnimationFrame(gameLoop);

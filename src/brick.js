@@ -1,4 +1,4 @@
-import {checkCollision} from "./collisions.js";
+
 
 export default class Brick {
 	constructor(ball, position) {
@@ -14,12 +14,5 @@ export default class Brick {
 
 	draw(ctx) {
 		ctx.drawImage(this.image, this.position.x, this.position.y, this.width, this.height);
-	}
-
-	update() {
-		if (checkCollision(this.ball, this)) {
-			this.ball.speed.y = -this.ball.speed.y;
-			this.delete = true;
-		}
 	}
 }
