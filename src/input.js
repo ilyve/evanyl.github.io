@@ -37,8 +37,8 @@ export default class InputHandler {
 			}
 		});
 
-		htmlObject.addEventListener('touchend', (f) => {
-			if (f.touches === 0) paddle.speed = 0;
+		htmlObject.addEventListener('touchend', (e) => {
+			if (e.touches === 0) paddle.speed = 0;
 		});
 
 
