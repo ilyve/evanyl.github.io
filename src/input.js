@@ -1,5 +1,5 @@
 export default class InputHandler {
-	constructor(paddle) {
+	constructor(paddle, htmlObject) {
 		document.addEventListener("keydown", event => {
 			// alert(event.keyCode);
 			switch(event.keyCode) {
@@ -26,6 +26,10 @@ export default class InputHandler {
 				default:
 					break;
 			}
+		});
+
+		htmlObject.addEventListener('touchstart', (e) => {
+			alert("touch");
 		});
 	}
 }
