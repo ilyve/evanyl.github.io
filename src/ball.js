@@ -5,7 +5,7 @@ export default class Ball {
 		this.image = new Image();
 		this.image.src = "../assets/images/ball.png";
 
-		this.position = {x: 300, y:350};
+		this.position = {x: 300, y:500};
 		this.speed = {x: 700, y: 600};
 
 		this.gameWidth = gameWidth;

@@ -20,9 +20,9 @@ let ball;
 let bricks = [];
 let brick;
 
-for (let i = 0; i <= 10; i++) {
+for (let i = 0; i <= 14; i++) {
 	for (let j = 0; j <= 19; j++) {
-		bricks.push(new Brick(ball, {x: j * 40, y: i * 20 + 100}));
+		bricks.push(new Brick(ball, {x: j * 40, y: i * 20 + 40}));
 	}
 };
 new InputHandler(paddle, htmlObject);
@@ -52,7 +52,7 @@ const gameLoop = timestamp => {
 
 	bricks = bricks.filter(object => !object.delete);
 
-	if (bricks.length <= 210 && balls.length <= 3) {
+	if (bricks.length <= 250 && balls.length == 1) {
 		balls.push(new Ball(GAME_WIDTH, GAME_HEIGHT));
 		balls[1].speed.x = -balls[1].speed.x;
 		balls.push(new Ball(GAME_WIDTH, GAME_HEIGHT));
