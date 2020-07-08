@@ -9,7 +9,7 @@ export default class Paddle {
 		this.maxSpeed = 1000;
 		this.speed = 0;
 
-		this.position = {x: gameWidth / 2 - this.width / 2, y: 550};
+		this.position = {x: gameWidth / 2 - this.width / 2, y: 570};
 	}
 
 	draw(ctx) {

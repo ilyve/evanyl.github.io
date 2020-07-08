@@ -27,5 +27,15 @@ export default class InputHandler {
 					break;
 			}
 		});
+
+		$("#gameScreen").click(function(e) {
+    	var divWidth = $("#gameScreen").width();        
+   		 var clickX = e.clientX;
+   		 if (clickX > divWidth/2) {
+     		   console.log("Div was clicked on the right");
+   		 } else {
+     		   console.log("Div was clicked on the left");
+   		 }
+});
 	}
 }
