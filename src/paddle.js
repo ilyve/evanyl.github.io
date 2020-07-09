@@ -1,6 +1,6 @@
 export default class Paddle {
 	constructor(gameWidth, gameHeight) {
-		this.width = 150;
+		this.width = 200;
 		this.height = 15;
 
 		this.gameWidth = gameWidth;
@@ -13,11 +13,13 @@ export default class Paddle {
 	}
 
 	draw(ctx) {
+		ctx.fillStyle = "black";
 		ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
 	}
 
-	update(deltaTime) {
+	update(deltaTime, game) {
 		this.position.x += this.speed * (deltaTime / 1000);
+		// Check wall collisions
 		if (this.position.x > this.gameWidth - this.width) this.position.x = this.gameWidth - this.width;
 		if (this.position.x < 0) this.position.x = 0;
 	}

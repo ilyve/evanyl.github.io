@@ -1,14 +1,29 @@
+const GAMESTATE = {
+	PAUSED: 0,
+	RUNNING: 1,
+	BUILDLEVEL: 2,
+	MENU: 3,
+	GAMEOVER: 4
+}
+
 export default class InputHandler {
-	constructor(paddle, htmlObject) {
+	constructor(game, htmlObject) {
 		document.addEventListener("keydown", event => {
 			// alert(event.keyCode);
 			switch(event.keyCode) {
 				case 37:
-				paddle.moveLeft();
+					game.paddle.moveLeft();
 					break;
 				case 39:
-				paddle.moveRight();
+					game.paddle.moveRight();
 					break;
+
+				case 32:
+					if (game.gameState = GAMESTATE.MENU) {
+						game.gameState = GAMESTATE.RUNNING;
+					}
+					break;
+
 				default:
 					break;
 			}
@@ -17,10 +32,10 @@ export default class InputHandler {
 		document.addEventListener("keyup", event => {
 			switch(event.keyCode) {
 				case 37:
-					if (paddle.speed < 0) paddle.speed = 0;
+					if (game.paddle.speed < 0) game.paddle.speed = 0;
 					break;
 				case 39:
-					if (paddle.speed > 0) paddle.speed = 0;
+					if (game.paddle.speed > 0) game.paddle.speed = 0;
 					break;
 				default:
 					break;
@@ -28,15 +43,18 @@ export default class InputHandler {
 		});
 
 		htmlObject.addEventListener('touchstart', (e) => {
+			if (game.gameState = GAMESTATE.MENU) {
+				game.gameState = GAMESTATE.RUNNING;
+			}
 			if(e.touches[e.touches.length -1].clientX < 400) {
-				paddle.moveLeft();
+				game.paddle.moveLeft();
 			} else if (e.touches[e.touches.length -1].clientX > 600) {
-				paddle.moveRight();
+				game.paddle.moveRight();
 			}
 		});
 
 		htmlObject.addEventListener('touchend', (e) => {
-			if (e.touches.length === 0) paddle.speed = 0;
+			if (e.touches.length === 0) game.paddle.speed = 0;
 		});
 
 
