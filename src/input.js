@@ -20,10 +20,15 @@ export default class InputHandler {
 
 				case 32:
 					if (game.gameState = GAMESTATE.MENU) {
+						game.start();
 						game.gameState = GAMESTATE.RUNNING;
 					}
 					break;
 
+				case 27:
+					game.togglePause();
+					break;
+					
 				default:
 					break;
 			}

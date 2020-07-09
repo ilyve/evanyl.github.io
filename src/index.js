@@ -16,9 +16,6 @@ const gameLoop = timestamp => {
 	let deltaTime = timestamp - lastTime;
 	lastTime = timestamp;
 
-	// Clear screen
-	ctx.clearRect(0,0,GAME_WIDTH, GAME_HEIGHT);
-
 	// Update
 	game.update(deltaTime, game);
 

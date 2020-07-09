@@ -1,7 +1,8 @@
 import Paddle from "./paddle.js";
 import InputHandler from "./input.js";
 import Ball from "./ball.js";
-import {buildLevel, level1, level2} from "./levels.js";
+import Score from "./score.js";
+import LevelHandler,  {levels} from "./levels.js";
 
 const GAMESTATE = {
 	PAUSED: 0,
@@ -20,53 +21,93 @@ export default class Game {
 		// Initialize game objects
 		this.paddle = new Paddle(this.gameWidth, this.gameHeight);
 		this.ball = new Ball(this.gameWidth, this.gameHeight);
+		this.levelHandler = new LevelHandler();
+		this.scoreboard = new Score();
+		this.gameObjects = [];
 		this.bricks = [];
 
 		// Initialize game info
 		this.gameState = GAMESTATE.MENU;
-
-		// Initialize level
-		this.bricks = buildLevel(level1);
+		this.level = 0;
 
 		// Init input handler
 		new InputHandler(this, document.getElementById("htmlObject"));
-
-		// Assign all game objects into array
-		this.gameObjects = [this.paddle, this.ball, ...this.bricks];
 	}
 
+	start() {
+		this.score = 0;
+		// Init level
+		this.bricks = this.levelHandler.buildLevel(levels[this.level]);
+		// Assign all objects into array
+		this.baseObjects = 3;
+		this.gameObjects = [this.paddle, this.ball, this.scoreboard, ...this.bricks];
+	}
+
+	// Draw screen
 	draw(ctx) {
+		ctx.clearRect(0,0,this.gameWidth, this.gameHeight);
 		this.gameObjects.forEach(object => object.draw(ctx));
-
 		// Game Menu
-		if (this.gameState === GAMESTATE.MENU) {
-			ctx.rect(0,0, this.gameWidth, this.gameHeight);
-			ctx.fillStyle = "rgba(0,0,0,1)";
-			ctx.fill();
+		switch (this.gameState) {
+			case GAMESTATE.MENU:
+				ctx.rect(0,0, this.gameWidth, this.gameHeight);
+				ctx.fillStyle = "rgba(0,0,0,1)";
+				ctx.fill();
 
-			ctx.font = "30px monospace";
-			ctx.fillStyle = "white";
-			ctx.textAlign = "center";
-			ctx.fillText(
-				"Press SPACEBAR or TAP SCREEN To Start",
-				this.gameWidth / 2,
-				this.gameHeight / 2
-			);
-			ctx.font = "24px monospace";
-			ctx.fillText(
-				"Press esc at any time to pause",
-				this.gameWidth / 2,
-				this.gameHeight / 2 + 30
-			);
+				ctx.font = "30px monospace";
+				ctx.fillStyle = "white";
+				ctx.textAlign = "center";
+				ctx.fillText(
+					"Press SPACEBAR or TAP SCREEN To Start",
+					this.gameWidth / 2,
+					this.gameHeight / 2
+				);
+				ctx.font = "24px monospace";
+				ctx.fillText(
+					"Press esc at any time to pause",
+					this.gameWidth / 2,
+					this.gameHeight / 2 + 30
+				);
+				break;
+
+			case GAMESTATE.PAUSED:
+				ctx.rect(0,0,this.gameWidth, this.gameHeight);
+				ctx.fillStyle = "rgba(0,0,0,0.5)";
+				ctx.fill();
+
+				ctx.font = "30px, monospace";
+				ctx.fillStyle = "white";
+				ctx.textAlign = "center";
+				ctx.fillText("PAUSED", this.gameWidth / 2, this.gameHeight / 2);
+				break;
 		}
 	}
 
+	// Update all game objects if game is running
 	update(deltaTime, game) {
 		// Only if game is running will update
 		if (this.gameState === GAMESTATE.RUNNING) {
 			this.gameObjects.forEach(object => object.update(deltaTime, game));
+
+			// Add bricks destroyed to score
+			this.score += this.gameObjects.length - this.gameObjects.filter(object => !object.delete).length;
+
 			// Filter out deleted bricks
 			this.gameObjects = this.gameObjects.filter(object => !object.delete);
+
+			// Check if level is complete
+			if (this.gameObjects.length === this.baseObjects) {
+				alert("Load Next Level");
+			}
+		}
+	}
+
+	// Toggle pause
+	togglePause() {
+		if (this.gameState === GAMESTATE.RUNNING) {
+			this.gameState = GAMESTATE.PAUSED;
+		} else if (this.gameState === GAMESTATE.PAUSED) {
+			this.gameState = GAMESTATE.RUNNING;
 		}
 	}
 }
