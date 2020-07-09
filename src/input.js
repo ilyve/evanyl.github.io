@@ -48,7 +48,7 @@ export default class InputHandler {
 		});
 
 		htmlObject.addEventListener('touchstart', (e) => {
-			if (game.gameState = GAMESTATE.MENU) {
+			if (game.gameState === GAMESTATE.MENU) {
 				game.start();
 				game.gameState = GAMESTATE.RUNNING;
 			}
