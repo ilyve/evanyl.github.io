@@ -23,12 +23,15 @@ export default class Game {
 		this.ball = new Ball(this.gameWidth, this.gameHeight);
 		this.levelHandler = new LevelHandler();
 		this.scoreboard = new Score();
+		this.essentialObjects = [];
 		this.gameObjects = [];
 		this.bricks = [];
 
 		// Initialize game info
 		this.gameState = GAMESTATE.MENU;
 		this.level = 0;
+		this.baseObjects = 3;
+		this.pauseTime = 0;
 
 		// Init input handler
 		new InputHandler(this, document.getElementById("htmlObject"));
@@ -37,10 +40,15 @@ export default class Game {
 	start() {
 		this.score = 0;
 		// Init level
+		this.essentialObjects = [this.paddle, this.ball, this.scoreboard];
+		this.loadLevel(0);
+	}
+
+	loadLevel(increment) {
+		this.gameState = GAMESTATE.BUILDLEVEL;
+		this.level += increment;
 		this.bricks = this.levelHandler.buildLevel(levels[this.level]);
-		// Assign all objects into array
-		this.baseObjects = 3;
-		this.gameObjects = [this.paddle, this.ball, this.scoreboard, ...this.bricks];
+		this.gameObjects = [...this.essentialObjects, ...this.bricks];
 	}
 
 	// Draw screen
@@ -80,6 +88,18 @@ export default class Game {
 				ctx.textAlign = "center";
 				ctx.fillText("PAUSED", this.gameWidth / 2, this.gameHeight / 2);
 				break;
+
+			case GAMESTATE.BUILDLEVEL:
+				ctx.rect(0,0,this.gameWidth, this.gameHeight);
+				ctx.fillStyle = "rgba(0,0,0,1)";
+				ctx.fill();
+
+				ctx.font = "30px, monospace";
+				ctx.fillStyle = "white";
+				ctx.textAlign = "center";
+				ctx.fillText(`Level: ${this.level + 1}`, this.gameWidth / 2, this.gameHeight / 2);
+				break;
+
 		}
 	}
 
@@ -97,9 +117,18 @@ export default class Game {
 
 			// Check if level is complete
 			if (this.gameObjects.length === this.baseObjects) {
-				alert("Load Next Level");
+				this.loadLevel(1);
 			}
 		}
+
+		if (this.gameState === GAMESTATE.BUILDLEVEL) {
+			this.pauseTime += deltaTime;
+			if (this.pauseTime > 1500) {
+				this.gameState = GAMESTATE.RUNNING;
+				this.pauseTime = 0;
+			}
+		}
+
 	}
 
 	// Toggle pause
@@ -109,5 +138,10 @@ export default class Game {
 		} else if (this.gameState === GAMESTATE.PAUSED) {
 			this.gameState = GAMESTATE.RUNNING;
 		}
+	}
+
+	death() {
+		this.loadLevel(0);
+		this.score = 0;
 	}
 }

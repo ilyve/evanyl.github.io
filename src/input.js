@@ -19,9 +19,8 @@ export default class InputHandler {
 					break;
 
 				case 32:
-					if (game.gameState = GAMESTATE.MENU) {
+					if (game.gameState === GAMESTATE.MENU) {
 						game.start();
-						game.gameState = GAMESTATE.RUNNING;
 					}
 					break;
 

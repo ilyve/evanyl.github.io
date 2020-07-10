@@ -35,6 +35,7 @@ export default class Ball {
 			this.speed.y = -this.speed.y;
 		} else if (this.position.y > this.gameHeight - this.size) {
 			// THIS IS GAME OVER
+			game.death();
 			this.position.y = this.gameHeight - this.size;
 			this.speed.y = -this.speed.y;
 		}

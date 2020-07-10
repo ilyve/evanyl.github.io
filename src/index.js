@@ -16,11 +16,12 @@ const gameLoop = timestamp => {
 	let deltaTime = timestamp - lastTime;
 	lastTime = timestamp;
 
+	// Draw objects
+	game.draw(ctx);
+	
 	// Update
 	game.update(deltaTime, game);
 
-	// Draw objects
-	game.draw(ctx);
 
 	requestAnimationFrame(gameLoop);
 };
