@@ -1,12 +1,16 @@
 import {checkCollision} from "./collisions.js";
 
+const STARTINGPOSITION = {x:300, y:500};
+const STARTINGSPEED = {x: 500, y: -600};
+
 export default class Ball {
 	constructor(gameWidth, gameHeight) {
 		this.image = new Image();
 		this.image.src = "../assets/images/ball.png";
 
-		this.position = {x: 300, y:500};
-		this.speed = {x: 500, y: 500};
+		this.position = STARTINGPOSITION;
+		this.baseSpeed = 300;
+		this.speed = STARTINGSPEED;
 
 		this.gameWidth = gameWidth;
 		this.gameHeight = gameHeight;
@@ -16,6 +20,20 @@ export default class Ball {
 
 	draw(ctx) {
 		ctx.drawImage(this.image, this.position.x,this.position.y, this.size, this.size);
+	}
+
+	reset() {
+		this.position = STARTINGPOSITION;
+		this.speed = STARTINGSPEED;
+	}
+
+	newSpeed() {
+		if (Math.random() < 0.5) {
+			this.changeDirection = -1;
+		} else {
+			this.changeDirection = 1;
+		}
+		this.speed.x = this.changeDirection * this.baseSpeed + Math.floor(Math.random() * 251);
 	}
 
 	update(deltaTime, game) {
@@ -54,6 +72,7 @@ export default class Ball {
 				if (checkCollision(this, object)) {
 					this.position.y = object.position.y - this.size;
 					this.speed.y = -this.speed.y;
+					this.newSpeed();
 				}
 			}
 		}

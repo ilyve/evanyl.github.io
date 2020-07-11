@@ -118,12 +118,14 @@ export default class Game {
 			// Check if level is complete
 			if (this.gameObjects.length === this.baseObjects) {
 				this.loadLevel(1);
+				this.ball.reset();
 			}
 		}
 
+		// Building level pause
 		if (this.gameState === GAMESTATE.BUILDLEVEL) {
 			this.pauseTime += deltaTime;
-			if (this.pauseTime > 1500) {
+			if (this.pauseTime > 1500) {;
 				this.gameState = GAMESTATE.RUNNING;
 				this.pauseTime = 0;
 			}

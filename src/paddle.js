@@ -1,6 +1,6 @@
 export default class Paddle {
 	constructor(gameWidth, gameHeight) {
-		this.width = 200;
+		this.width = 150;
 		this.height = 15;
 
 		this.gameWidth = gameWidth;
