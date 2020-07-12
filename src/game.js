@@ -2,7 +2,7 @@ import Paddle from "./paddle.js";
 import InputHandler from "./input.js";
 import Ball from "./ball.js";
 import Score from "./score.js";
-import LevelHandler,  {levels} from "./levels.js";
+import LevelHandler, randomLevelGenerator,  {levels} from "./levels.js";
 
 const GAMESTATE = {
 	PAUSED: 0,
@@ -52,6 +52,7 @@ export default class Game {
 		this.gameObjects = [...this.essentialObjects, ...this.bricks];
 
 		this.notStarted = true;
+		levels.push(randomLevelGenerator);
 	}
 
 	// Draw screen
