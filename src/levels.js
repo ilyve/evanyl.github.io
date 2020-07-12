@@ -28,7 +28,11 @@ export default class LevelHandler {
 		for (let rowIndex = 0; rowIndex < 20; rowIndex++) {
 			let row = [];
 			for (let columnIndex = 0; columnIndex < 10; columnIndex++) {
-				if (Math.random() < 0.2) {
+				if (rowIndex <=5) {
+					row.push(0);
+				} else if (rowIndex >= 15) {
+					row.push(0);
+				} else if (Math.random() < 0.2) {
 					row.push(1);
 				} else {
 					row.push(0);

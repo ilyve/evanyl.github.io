@@ -1,7 +1,7 @@
 import {checkCollision} from "./collisions.js";
 
 const STARTINGPOSITION = {x:300, y:500};
-const STARTINGSPEED = {x: 400, y: -500};
+const STARTINGSPEED = {x: 400, y: -400};
 
 export default class Ball {
 	constructor(game) {
