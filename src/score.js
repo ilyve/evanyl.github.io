@@ -1,6 +1,7 @@
 export default class Score {
-	constructor() {
+	constructor(game) {
 		this.scoreElement = document.getElementById("score");
+		this.game = game;
 	}
 
 	draw(ctx) {
@@ -8,6 +9,6 @@ export default class Score {
 	}
 
 	update(deltaTime, game) {
-		this.scoreElement.innerHTML = game.score;
+		this.scoreElement.innerHTML = this.game.score;
 	}
 }
