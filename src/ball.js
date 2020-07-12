@@ -10,7 +10,7 @@ export default class Ball {
 
 		this.position = STARTINGPOSITION;
 		this.speed = STARTINGSPEED;
-		this.baseSpeed = 400;
+		this.baseSpeed = 500;
 		this.maxSpeedFluctuation = 300;
 
 		this.game = game;
@@ -42,7 +42,7 @@ export default class Ball {
 			this.changeDirection = -Math.sign(this.speed.x);
 		}
 
-		if (Math.random() < 0.65) {
+		if (Math.random() < 0.4) {
 			this.speedFluctuation = this.maxSpeedFluctuation * 0.5;
 		} else {
 			this.speedFluctuation = this.maxSpeedFluctuation;

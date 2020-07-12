@@ -54,8 +54,10 @@ export default class InputHandler {
 				game.gameState = GAMESTATE.RUNNING;
 			}
 			if(e.touches[e.touches.length -1].clientX < 400) {
+				game.ball.starting();
 				game.paddle.moveLeft();
 			} else if (e.touches[e.touches.length -1].clientX > 600) {
+				game.ball.starting();
 				game.paddle.moveRight();
 			}
 		});
