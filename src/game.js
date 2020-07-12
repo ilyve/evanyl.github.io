@@ -26,6 +26,7 @@ export default class Game {
 		this.essentialObjects = [];
 		this.gameObjects = [];
 		this.bricks = [];
+		this.levels = levels;
 
 		// Initialize game info
 		this.gameState = GAMESTATE.MENU;
@@ -48,11 +49,11 @@ export default class Game {
 	loadLevel(increment) {
 		this.gameState = GAMESTATE.BUILDLEVEL;
 		this.level += increment;
-		this.bricks = this.levelHandler.buildLevel(levels[this.level]);
+		this.bricks = this.levelHandler.buildLevel(this.levels[this.level]);
 		this.gameObjects = [...this.essentialObjects, ...this.bricks];
 
 		this.notStarted = true;
-		levels.push(this.levelHandler.randomLevelGenerator());
+		this.levels.push(this.levelHandler.randomLevelGenerator());
 	}
 
 	// Draw screen
