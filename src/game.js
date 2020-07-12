@@ -117,7 +117,7 @@ export default class Game {
 					this.ball.notStarted();
 				}
 
-				this.gameObjects.forEach(object => object.update(deltaTime, game));
+				this.gameObjects.forEach(object => object.update(deltaTime));
 
 				// Add bricks destroyed to score
 				this.score += this.gameObjects.length - this.gameObjects.filter(object => !object.delete).length;
