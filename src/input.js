@@ -12,12 +12,16 @@ export default class InputHandler {
 			// alert(event.keyCode);
 			switch(event.keyCode) {
 				case 37:
-					game.ball.starting();
-					game.paddle.moveLeft();
+					if (game.gameState === GAMESTATE.RUNNING) {
+						game.ball.starting();
+						game.paddle.moveLeft();
+					}
 					break;
 				case 39:
-					game.ball.starting();
-					game.paddle.moveRight();
+					if (game.gameState === GAMESTATE.RUNNING) {
+						game.ball.starting();
+						game.paddle.moveRight();
+					}
 					break;
 
 				case 32:
