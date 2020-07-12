@@ -109,7 +109,7 @@ export default class Game {
 	}
 
 	// Update all game objects if game is running
-	update(deltaTime, game) {
+	update(deltaTime) {
 		switch (this.gameState) {
 			// Only if game is running will update
 			case GAMESTATE.RUNNING:
