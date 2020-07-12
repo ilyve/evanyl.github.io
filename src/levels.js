@@ -42,6 +42,23 @@ export function buildLevel(level) {
 	return bricks;
 }
 
+export function randomLevelGenerator() {
+	let bricks = [];
+	for (let rowIndex = 0; rowIndex < 20; rowIndex++) {
+		let row = [];
+		for (let columnIndex = 0; columnIndex < 10; columnIndex++) {
+			if (Math.random() < 0.5) {
+				row.push(1);
+			} else {
+				row.push(0);
+			}
+		}
+		bricks.push(row);
+	}
+	
+	return bricks;
+}
+
 
 // 10 across, 20 up and down
 export const levels = [
