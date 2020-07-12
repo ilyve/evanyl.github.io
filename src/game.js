@@ -52,7 +52,7 @@ export default class Game {
 		this.gameObjects = [...this.essentialObjects, ...this.bricks];
 
 		this.notStarted = true;
-		levels.push(randomLevelGenerator);
+		levels.push(this.randomLevelGenerator);
 	}
 
 	// Draw screen
