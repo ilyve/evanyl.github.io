@@ -1,66 +1,91 @@
 import {checkCollision} from "./collisions.js";
 
 const STARTINGPOSITION = {x:300, y:500};
-const STARTINGSPEED = {x: 500, y: -600};
+const STARTINGSPEED = {x: 400, y: -500};
 
 export default class Ball {
-	constructor(gameWidth, gameHeight) {
+	constructor(game) {
 		this.image = new Image();
 		this.image.src = "../assets/images/ball.png";
 
 		this.position = STARTINGPOSITION;
-		this.baseSpeed = 300;
 		this.speed = STARTINGSPEED;
+		this.baseSpeed = 400;
+		this.maxSpeedFluctuation = 300;
 
-		this.gameWidth = gameWidth;
-		this.gameHeight = gameHeight;
+		this.game = game;
 
 		this.size = 15;
 	}
 
 	draw(ctx) {
-		ctx.drawImage(this.image, this.position.x,this.position.y, this.size, this.size);
+		ctx.drawImage(this.image, this.position.x, this.position.y, this.size, this.size);
 	}
 
-	reset() {
-		this.position = STARTINGPOSITION;
-		this.speed = STARTINGSPEED;
+	notStarted() {
+		this.speed = {x: 0, y:0};
+		this.position.x = this.game.paddle.position.x + (this.game.paddle.width / 2) - this.size / 2;
+		this.position.y = this.game.paddle.position.y - this.size;
+	}
+
+	starting() {
+		if (this.game.notStarted) {
+			this.speed = STARTINGSPEED;
+			this.game.notStarted = false;
+		}	
 	}
 
 	newSpeed() {
-		if (Math.random() < 0.5) {
-			this.changeDirection = -1;
+		if (Math.random() < 0.8) {
+			this.changeDirection = Math.sign(this.speed.x);
 		} else {
-			this.changeDirection = 1;
+			this.changeDirection = -Math.sign(this.speed.x);
 		}
-		this.speed.x = this.changeDirection * this.baseSpeed + Math.floor(Math.random() * 251);
+
+		if (Math.random() < 0.65) {
+			this.speedFluctuation = this.maxSpeedFluctuation * 0.5;
+		} else {
+			this.speedFluctuation = this.maxSpeedFluctuation;
+		}
+
+		this.speed.x = this.changeDirection * this.baseSpeed + this.changeDirection * Math.floor(Math.random() * this.speedFluctuation - this.maxSpeedFluctuation / 2);
+		
 	}
 
 	update(deltaTime, game) {
+		// Add distance traveled
 		this.position.x += this.speed.x * (deltaTime / 1000);
 		this.position.y += this.speed.y * (deltaTime / 1000);
 
 		// Check wall collisions
+		this.checkWallCollisions();
+
+		// Loop through all game objects
+		this.checkAllGameObjects();
+	}
+
+	checkWallCollisions() {
 		if (this.position.x < 0) {
 			this.position.x = 0;
 			this.speed.x = -this.speed.x;
-		} else if (this.position.x > this.gameWidth - this.size) {
-			this.position.x = this.gameWidth - this.size;
+		} else if (this.position.x > this.game.gameWidth - this.size) {
+			this.position.x = this.game.gameWidth - this.size;
 			this.speed.x = -this.speed.x;
 		}
 		if (this.position.y < 0) {
 			this.position.y = 0;
 			this.speed.y = -this.speed.y;
-		} else if (this.position.y > this.gameHeight - this.size) {
+		} else if (this.position.y > this.game.gameHeight - this.size) {
 			// THIS IS GAME OVER
-			game.death();
-			this.position.y = this.gameHeight - this.size;
+			this.game.death();
+			this.position.y = this.game.gameHeight - this.size;
 			this.speed.y = -this.speed.y;
 		}
+	}
 
-		// Loop through all game objects
+	checkAllGameObjects() {
 		let object;
-		for (object of game.gameObjects) {
+		for (object of this.game.gameObjects) {
 			// Branch where object is a brick
 			if (object.delete !== undefined) {
 				if (checkCollision(this, object)) {

@@ -19,8 +19,8 @@ export default class Game {
 		this.gameHeight = gameHeight;
 
 		// Initialize game objects
-		this.paddle = new Paddle(this.gameWidth, this.gameHeight);
-		this.ball = new Ball(this.gameWidth, this.gameHeight);
+		this.paddle = new Paddle(this);
+		this.ball = new Ball(this);
 		this.levelHandler = new LevelHandler();
 		this.scoreboard = new Score();
 		this.essentialObjects = [];
@@ -30,8 +30,8 @@ export default class Game {
 		// Initialize game info
 		this.gameState = GAMESTATE.MENU;
 		this.level = 0;
-		this.baseObjects = 3;
 		this.pauseTime = 0;
+		this.notStarted = true;
 
 		// Init input handler
 		new InputHandler(this, document.getElementById("htmlObject"));
@@ -41,6 +41,7 @@ export default class Game {
 		this.score = 0;
 		// Init level
 		this.essentialObjects = [this.paddle, this.ball, this.scoreboard];
+		this.baseObjects = 3;
 		this.loadLevel(0);
 	}
 
@@ -49,6 +50,8 @@ export default class Game {
 		this.level += increment;
 		this.bricks = this.levelHandler.buildLevel(levels[this.level]);
 		this.gameObjects = [...this.essentialObjects, ...this.bricks];
+
+		this.notStarted = true;
 	}
 
 	// Draw screen
@@ -105,32 +108,40 @@ export default class Game {
 
 	// Update all game objects if game is running
 	update(deltaTime, game) {
-		// Only if game is running will update
-		if (this.gameState === GAMESTATE.RUNNING) {
-			this.gameObjects.forEach(object => object.update(deltaTime, game));
+		switch (this.gameState) {
+			// Only if game is running will update
+			case GAMESTATE.RUNNING:
+				if (this.notStarted) {
+					this.ball.notStarted();
+				}
 
-			// Add bricks destroyed to score
-			this.score += this.gameObjects.length - this.gameObjects.filter(object => !object.delete).length;
+				this.gameObjects.forEach(object => object.update(deltaTime, game));
 
-			// Filter out deleted bricks
-			this.gameObjects = this.gameObjects.filter(object => !object.delete);
+				// Add bricks destroyed to score
+				this.score += this.gameObjects.length - this.gameObjects.filter(object => !object.delete).length;
 
-			// Check if level is complete
-			if (this.gameObjects.length === this.baseObjects) {
-				this.loadLevel(1);
-				this.ball.reset();
-			}
+				// Filter out deleted bricks
+				this.gameObjects = this.gameObjects.filter(object => !object.delete);
+
+				// Check if level is complete
+				if (this.gameObjects.length === this.baseObjects) {
+					this.loadLevel(1);
+				}
+				break;
+
+			// Building level pause
+			case GAMESTATE.BUILDLEVEL:
+				this.pauseTime += deltaTime;
+				if (this.pauseTime > 1500) {
+					this.gameState = GAMESTATE.RUNNING;
+					this.pauseTime = 0;
+				}
+				break;
+
+			default:
+				break;
+
 		}
-
-		// Building level pause
-		if (this.gameState === GAMESTATE.BUILDLEVEL) {
-			this.pauseTime += deltaTime;
-			if (this.pauseTime > 1500) {;
-				this.gameState = GAMESTATE.RUNNING;
-				this.pauseTime = 0;
-			}
-		}
-
 	}
 
 	// Toggle pause
