@@ -1,7 +1,7 @@
 export default class Brick {
 	constructor(position) {
 		this.image = new Image();
-		this.image.src = "../assets/images/brick.png";
+		this.image.src = `../assets/images/brick${Math.floor((Math.random() * 3) + 1)}.png`;
 		this.width = 80;
 		this.height = 20;
 		this.position = {x: position.x, y: position.y};
